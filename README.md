@@ -10,31 +10,36 @@ In this documentaion, I have:
 
 # Network Topology
 I decided to run the Wazuh server on my desktop computer (endpoint-02), since it has more resources than my laptop (endpoint-01). In order to accomplish this, I had to use a virtual machine since Wazuh only supports a few select operating systems. I decided to go with Ubuntu. After I installed the server, I installed an agent on endpoint-01, and an agent on endpoint-02. So I have endpoint-02 running the VM with the server along with an agent, and endpoint-01 with an agent installed. Below is a diagram of the network:
-                               +----------------------+
-                               |       Network        |
-                               |   (LAN / Switch)     |
-                               +----------+-----------+
-                                          |
-                +-------------------------+-------------------------+
-                |                                                   |
-                |                                                   |
-+---------------+---------------+                 +-----------------+----------------+
-|          Endpoint-01          |                 |            Endpoint-02            |
-|-------------------------------|                 |-----------------------------------|
-|          Linux Mint           |                 |            Windows 11             |
-|                               |                 |                                   |
-|  +-------------------------+  |                 |  +-------------------------+      |
-|  |      Wazuh Agent        |  |                 |  |      Wazuh Agent        |      |
-|  +-------------------------+  |                 |  +-------------------------+      |
-|                               |                 |                                   |
-+---------------+---------------+                 |  +-------------------------+      |
-                |                                 |  |     Virtual Machine     |      |
-                |                                 |  |-------------------------|      |
-                |                                 |  |     Wazuh Manager       |      |
-                |                                 |  +-------------------------+      |
-                |                                 +-----------------+-----------------+
-                |                                                   ^
-                +---------------------------------------------------+
+
+<pre>
+                              ┌─────────────┐
+                              │  INTERNET   │
+                              └──────┬──────┘
+                                     │
+                            ┌────────┴────────┐
+                            │ HOME ROUTER     │
+                            │ DHCP: 192.168.7.1│
+                            └────────┬────────┘
+                                     │
+      ═══════════════════════════════╪═══════════════════════
+                                     │ Bridged LAN
+                               192.168.7.0/24
+             
+       ┌─────────────────────────────┼─────────────────────────────┐
+       │                             │                             │
+       ▼                             ▼                             ▼
+┌───────────────┐           ┌─────────────────┐           ┌─────────────────┐
+│ LINUX MINT    │           │   WINDOWS 11    │           │   UBUNTU VM     │
+│ LAPTOP        │◄──────────│   HOST PC       │──────────▶│  (VirtualBox)   │
+│               │           │                 │           │                 │
+│ endpoint-01   │           │   endpoint-02   │           │  WAZUH STACK    │
+│               │           │                 │           │                 │
+│ • Wazuh Agent │◄──────────│• Wazuh Agent    │──────────▶│ • Manager       │
+│               │           │ + Server Host   │           │ • Indexer       │
+│               │           │                 │           │ • Dashboard     │
+└───────────────┘           └─────────────────┘           └─────────────────┘
+         ↕ Log Forwarding          ↕ Agent + Nested Server        
+</pre>
                      
 
 

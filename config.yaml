@@ -1,0 +1,5 @@
+remote_theme: pmarsceill/just-the-docs
+title: "Wazuh SIEM Home Lab"
+description: "Security monitoring deployment documentation"
+baseurl: ""      # Leave empty unless in subdirectory
+url: "https://orangecampfire.github.io/SIEM-project/"

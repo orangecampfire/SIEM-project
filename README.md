@@ -7,9 +7,11 @@ In this documentation, I have:
 - Installed a Wazuh server on an Ubuntu virtual machine
 - Installed a Wazuh agent on two separate devices (Linux Mint laptop and Windows 11 PC)
 - Ensured that the agents were connected to the server
+- Configured additional log sources on Windows
+- Added a custom directory for file integrity monitoring
 
 # Network Topology
-I decided to run the Wazuh server on my desktop computer (endpoint-02), since it has more resources than my laptop (endpoint-01). In order to accomplish this, I had to use a virtual machine since Wazuh only supports a few select operating systems. I decided to go with Ubuntu. After I installed the server, I installed an agent on endpoint-01, and an agent on endpoint-02. So I have endpoint-02 running the VM with the server along with an agent, and endpoint-01 with an agent installed. Below is a diagram of the network:
+I decided to run the Wazuh server on my desktop computer (endpoint-02), since it has more resources than my laptop (endpoint-01). In order to accomplish this, I had to use a virtual machine since Wazuh only supports a few select operating systems. I decided to go with Ubuntu. After I installed the server, I installed an agent on endpoint-01, and an agent on endpoint-02. So I have endpoint-02 hosting the VM (which has the server components) and hosting an agent. Endpoint-01 aslo has an agent installed. Below is a diagram of the network:
 
 <pre>
                               ┌─────────────┐
@@ -45,7 +47,7 @@ I decided to run the Wazuh server on my desktop computer (endpoint-02), since it
 
 # Part 1
 
-The first thing I did to start was to head over to [The Wazuh Docs](https://documentation.wazuh.com/current/getting-started/index.html) in order to figure out what to do. I decided to go the quickstart route, and followed the commands to install the Wazuh server on the Ubuntu VM. Below, you can see that I have installed and started the server.
+I started by reviewing [The Wazuh Docs](https://documentation.wazuh.com/current/getting-started/index.html) in order to figure out what to do. I decided to go the quickstart route, and followed the commands to install the Wazuh server on the Ubuntu VM. Below, you can see that I have installed and started the server.
 
 
 ![Figure 1](./assets/images/fig-1_server_started.png)
@@ -119,4 +121,16 @@ Sysmon log alerts and file monitoring alerts:
 ![Figure 11](./assets/images/fig-11_sysmon-and-file_alerts.png)
 
 
+# Lessons Learned
+This is what I have learned so far:
+
+- How to install and configure Wazuh
+- How to incorporate other WIndows log sources into Wazuh agents
+- Creating logs that would be picked up by different sources (Sysmon, Windows Defender)
+
+What I want to learn next:
+- How to add similar log sources on Linux
+- How to analyze logs for malicious activity
+
 Part 3 coming soon: Adding both systemd journal logs and directory monitoring on endpoint-01 on Linux.
+

@@ -83,7 +83,7 @@ The service started successfully, so I went back to the dashboard to verify.
 ![Figure 6](./assets/images/fig-6_both_endpoints_configured.png)
 
 
-# Part 2: Adding Windows and Linux Logs
+# Part 2: Adding Windows Logging
 
 I wanted to add additional logging functionality, so I decided to add Windows and Linux logs for more alerts. 
 I followed [this guide](https://github.com/UsmanPrime/Wazuh-Setup). 

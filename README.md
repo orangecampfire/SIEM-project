@@ -50,12 +50,12 @@ The first thing I did to start was to head over to [The Wazuh Docs](https://docu
 
 ![Figure 1](./assets/images/fig-1_server_started.png)
 
-Once that was running, I went to the webpage on localhost port 443 to login with the provided credentials and view the dashboard.
+Once that was running, I went to the webpage on localhost port 443 to log in with the provided credentials and view the dashboard.
 
 
 ![Figure 1.1](./assets/images/fig-1.1_wazuh_dashboard.png)
 
-As you can see, at this point there were no agents running, and the data is all fluff. Time to change that by installing some agents. I started with endpoint-01.
+As you can see, at this point there were no agents running, and the data was all fluff. Time to change that by installing some agents. I started with endpoint-01.
 
 
 ![Figure 2](./assets/images/fig-2_install_agent_endpoint-01.png)
@@ -65,13 +65,13 @@ Once that finished, I made sure it was running.
 
 ![Figure 3](./assets/images/fig-3_wazuh_agent_running.png)
 
-I checked the dashboard to verify that the agent could reach the server on the VM
+I checked the dashboard to verify that the agent could reach the server running on the VM.
 
 
 ![Figure 4](./assets/images/fig-4_endpoint_01_configured.png)
 
 
-Everything looked good, so I moved onto endpoint-02. I had some challenges with the Wazuh agent installation on Windows, but that was only because I misread a section of the docs and didn't download the .msi file required. Once I realized my mistake, I quickly corrected it by downloading the correct file and running the command provided.
+Everything looked good, so I moved on to endpoint-02. I had some challenges with the Wazuh agent installation on Windows, but that was only because I misread a section of the docs and didn't download the .msi file required. Once I realized my mistake, I quickly corrected it by downloading the correct file and running the command provided.
 
 ![Figure 5](./assets/images/fig-5_endpoint-02_started.png)
 
@@ -87,34 +87,40 @@ Stay tuned for part 2: Electric Bugaloo
 
 # Part 2: Adding Windows and Linux Logs
 
-I wanted to add more logging functionality, so I decided to add Windows/Linux logs for more alerts. 
+I wanted to add additional logging functionality, so I decided to add Windows and Linux logs for more alerts. 
 I followed [this guide](https://github.com/UsmanPrime/Wazuh-Setup). 
 
 Starting with Windows, I opened the `ossec.conf` file and added a section of code that would add Windows Defender events with appropriate alert levels to the Wazuh agent.
  
-![Figure 7](./assets/images/fig-7_sysmon.png)
+![Figure 7](./assets/images/fig-7_win_defender.png)
 
 
-Then, I added Sysmon logging: 
+Then, for more detailed logging, I installed and configured Sysmon.
 
-![Figure 8](./assets/images/fig-8_win_defender.png)
+**Installation**
+
+![Figure 8.2: Installation](./assets/images/fig-82_sysmon_installed.png)
+
+**Configuration**
+
+![Figure 8.1: Configuration](./assets/images/fig-81_sysmon.png)
 
 
-Lastly, I added monitoring of a specific directory, including notifications of when a file was deleted, created, or modified. 
+Lastly, I added monitoring of a custom directory, including notifications when a file was deleted, created, or modified. This is in addition to the directories already monitored by default.
+Here I only created a test directory to show how it is done, but this process works for any folder on Windows. 
 
-![Figure 9](./assets/images/)
+![Figure 9](./assets/images/fig-9_file_integrity.png)
 
 
-In order to test these functions, I created some alerts by logging in/out and by creating some files. Then, I went to the dashboard and verified that I could see that the alerts triggered.
+To test the alerts, I created, deleted, and edited some files. I used PowerShell to launch `notepad.exe` to generate sysmon events. I also downloaded the EICAR file to generate Windows Defender logs. 
+
+Then, I went to the dashboard and verified that I could see that the alerts were triggered.
 
 Windows Defender logs:
-![Figure 10](./assets/images/)
+![Figure 10](./assets/images/fig-10_win_defender_alerts.png)
 
-Sysmon logs:
-![Figure 10](./assets/images/)
-
-Directory monitoring logs:
-![Figure 10](./assets/images/)
+Sysmon log alerts and file monitoring alerts:
+![Figure 11](./assets/images/fig-11_sysmon-and-file_alerts.png)
 
 
-Once I verified that Wazuh was properly configured on Windows, I turned to endpoint-01 on Linux. I added both systemd journal logs and directory monitoring.
+Part 3 coming soon: Adding both systemd journal logs and directory monitoring on endpoint-01 on Linux.

@@ -34,7 +34,7 @@ I decided to run the Wazuh server on my desktop computer (endpoint-02), since it
 │               │           │                 │           │                 │
 │ endpoint-01   │           │   endpoint-02   │           │  WAZUH STACK    │
 │               │           │                 │           │                 │
-│ • Wazuh Agent │◄──────────│• Wazuh Agent    │──────────▶│ • Manager       │
+│ • Wazuh Agent │◄──────────│• Wazuh Agent    │─────────▶│ • Manager       │
 │               │           │ + Server Host   │           │ • Indexer       │
 │               │           │                 │           │ • Dashboard     │
 └───────────────┘           └─────────────────┘           └─────────────────┘
@@ -43,35 +43,78 @@ I decided to run the Wazuh server on my desktop computer (endpoint-02), since it
                      
 
 
-# Process
+# Part 1
 
 The first thing I did to start was to head over to [The Wazuh Docs](https://documentation.wazuh.com/current/getting-started/index.html) in order to figure out what to do. I decided to go the quickstart route, and followed the commands to install the Wazuh server on the Ubuntu VM. Below, you can see that I have installed and started the server.
+
 
 ![Figure 1](./assets/images/fig-1_server_started.png)
 
 Once that was running, I went to the webpage on localhost port 443 to login with the provided credentials and view the dashboard.
 
+
 ![Figure 1.1](./assets/images/fig-1.1_wazuh_dashboard.png)
 
 As you can see, at this point there were no agents running, and the data is all fluff. Time to change that by installing some agents. I started with endpoint-01.
+
 
 ![Figure 2](./assets/images/fig-2_install_agent_endpoint-01.png)
 
 Once that finished, I made sure it was running.
 
+
 ![Figure 3](./assets/images/fig-3_wazuh_agent_running.png)
 
 I checked the dashboard to verify that the agent could reach the server on the VM
 
+
 ![Figure 4](./assets/images/fig-4_endpoint_01_configured.png)
 
-Everything looked good, so I moved onto endpoint-02. I had some challenges with the Wazuh agent installation on Windows, but that was only because I misread a section and didn't download the .msi file required. Once I realized my mistake, I quickly corrected it by downloading the correct file and running the command provided by the docs. 
+
+Everything looked good, so I moved onto endpoint-02. I had some challenges with the Wazuh agent installation on Windows, but that was only because I misread a section of the docs and didn't download the .msi file required. Once I realized my mistake, I quickly corrected it by downloading the correct file and running the command provided.
 
 ![Figure 5](./assets/images/fig-5_endpoint-02_started.png)
 
 The service started successfully, so I went back to the dashboard to verify. 
 
+
 ![Figure 6](./assets/images/fig-6_both_endpoints_configured.png)
+
 
 Both endpoints have been connected and this concludes the lab... for now.
 Stay tuned for part 2: Electric Bugaloo
+
+
+# Part 2: Adding Windows and Linux Logs
+
+I wanted to add more logging functionality, so I decided to add Windows/Linux logs for more alerts. 
+I followed [this guide](https://github.com/UsmanPrime/Wazuh-Setup). 
+
+Starting with Windows, I opened the `ossec.conf` file and added a section of code that would add Windows Defender events with appropriate alert levels to the Wazuh agent.
+ 
+![Figure 7](./assets/images/fig-7_sysmon.png)
+
+
+Then, I added Sysmon logging: 
+
+![Figure 8](./assets/images/fig-8_win_defender.png)
+
+
+Lastly, I added monitoring of a specific directory, including notifications of when a file was deleted, created, or modified. 
+
+![Figure 9](./assets/images/)
+
+
+In order to test these functions, I created some alerts by logging in/out and by creating some files. Then, I went to the dashboard and verified that I could see that the alerts triggered.
+
+Windows Defender logs:
+![Figure 10](./assets/images/)
+
+Sysmon logs:
+![Figure 10](./assets/images/)
+
+Directory monitoring logs:
+![Figure 10](./assets/images/)
+
+
+Once I verified that Wazuh was properly configured on Windows, I turned to endpoint-01 on Linux. I added both systemd journal logs and directory monitoring.

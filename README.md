@@ -1,5 +1,5 @@
 # Home Lab SIEM project
-Welcome! This is my documentation of my learning process with Wazuh. I decided to start with Wazuh in order to learn more about endpoint security, log monitoring, and to get familiar with an enterprise level SIEM. 
+Welcome! This is my documentation of my learning process with Wazuh. I decided to start with Wazuh in order to learn more about endpoint security, log monitoring, and to get familiar with an enterprise-level SIEM. 
 
 # Overview
 
@@ -11,7 +11,7 @@ In this documentation, I have:
 - Added a custom directory for file integrity monitoring
 
 # Network Topology
-I decided to run the Wazuh server on my desktop computer (endpoint-02), since it has more resources than my laptop (endpoint-01). In order to accomplish this, I had to use a virtual machine since Wazuh only supports a few select operating systems. I decided to go with Ubuntu. After I installed the server, I installed an agent on endpoint-01, and an agent on endpoint-02. So I have endpoint-02 hosting the VM (which has the server components) and hosting an agent. Endpoint-01 aslo has an agent installed. Below is a diagram of the network:
+I decided to run the Wazuh server on my desktop computer (endpoint-02), since it has more resources than my laptop (endpoint-01). In order to accomplish this, I had to use a virtual machine since Wazuh only supports a few select operating systems. I decided to go with Ubuntu. After I installed the server, I installed an agent on endpoint-01, and an agent on endpoint-02. This means endpoint-02 serves two roles: it hosts the Ubuntu VM running the Wazuh server components, and it also runs a Wazuh agent directly on itself. Endpoint-01 runs a Wazuh agent directly on the Linux Mint host. Below is a diagram of the network:
 
 <pre>
                               ┌─────────────┐
@@ -125,7 +125,7 @@ Sysmon log alerts and file monitoring alerts:
 This is what I have learned so far:
 
 - How to install and configure Wazuh
-- How to incorporate other WIndows log sources into Wazuh agents
+- How to incorporate other Windows log sources into Wazuh agents
 - Creating logs that would be picked up by different sources (Sysmon, Windows Defender)
 
 What I want to learn next:

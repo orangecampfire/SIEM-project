@@ -85,7 +85,7 @@ The service started successfully, so I went back to the dashboard to verify.
 
 # Part 2: Adding Windows Logging
 
-I wanted to add additional logging functionality, so I decided to add Windows and Linux logs for more alerts. 
+I wanted to expand the amount of endpoint telemetry being collected, so I decided to add additional Windows log sources. 
 I followed [this guide](https://github.com/UsmanPrime/Wazuh-Setup). 
 
 Starting with Windows, I opened the `ossec.conf` file and added a section of code that would add Windows Defender events with appropriate alert levels to the Wazuh agent.

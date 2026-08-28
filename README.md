@@ -81,10 +81,6 @@ The service started successfully, so I went back to the dashboard to verify.
 ![Figure 6](./assets/images/fig-6_both_endpoints_configured.png)
 
 
-Both endpoints have been connected and this concludes the lab... for now.
-Stay tuned for part 2: Electric Bugaloo
-
-
 # Part 2: Adding Windows and Linux Logs
 
 I wanted to add additional logging functionality, so I decided to add Windows and Linux logs for more alerts. 

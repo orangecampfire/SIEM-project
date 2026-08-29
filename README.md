@@ -9,6 +9,7 @@ In this documentation, I have:
 - Ensured that the agents were connected to the server
 - Configured additional log sources on Windows
 - Added a custom directory for file integrity monitoring
+- Forwarded logs from a Linux endpoint
 
 # Network Topology
 I decided to run the Wazuh server on my desktop computer (endpoint-02), since it has more resources than my laptop (endpoint-01). In order to accomplish this, I had to use a virtual machine since Wazuh only supports a few select operating systems. I decided to go with Ubuntu. After I installed the server, I installed an agent on endpoint-01, and an agent on endpoint-02. This means endpoint-02 serves two roles: it hosts the Ubuntu VM running the Wazuh server components, and it also runs a Wazuh agent directly on itself. Endpoint-01 runs a Wazuh agent directly on the Linux Mint host. Below is a diagram of the network:
@@ -88,12 +89,12 @@ The service started successfully, so I went back to the dashboard to verify.
 I wanted to expand the amount of endpoint telemetry being collected, so I decided to add additional Windows log sources. 
 I followed [this guide](https://github.com/UsmanPrime/Wazuh-Setup). 
 
-Starting with Windows, I opened the `ossec.conf` file and added a section of code that would add Windows Defender events with appropriate alert levels to the Wazuh agent.
+Starting with Windows, I opened the `ossec.conf` file and added a section of code that would add Windows Defender events to the Wazuh agent.
  
 ![Figure 7](./assets/images/fig-7_win_defender.png)
 
 
-Then, for more detailed logging, I installed and configured Sysmon.
+Then, for more detailed logging, I installed and configured Sysmon. Sysmon logs can keep track of process and file creation, as well as other things. Overall, it provides more detailed logging capabilities that would be very valuable when investigating a security incident. 
 
 **Installation**
 
@@ -121,16 +122,27 @@ Sysmon log alerts and file monitoring alerts:
 ![Figure 11](./assets/images/fig-11_sysmon-and-file_alerts.png)
 
 
+# Part 3: Log Forwarding on Linux
+
+I referred to the [official Wazuh documentation](https://documentation.wazuh.com/current/user-manual/capabilities/log-data-collection/configuration.html#linux) for instructions on forwarding logs to the Wazuh server. The process involved adding a line to `/etc/rsyslog.conf` on the Linux endpoint to instruct it to forward the logs to the Wazuh server. I then configured the `ossec.conf` file on the Wazuh server to listen on a specific port and allow the collection of those logs.
+
+The configuration file on Linux:
+
+![Figure 12](./assets/images/fig-12_forward_command.png)
+
+The configuratiuon file on the server: 
+
+![Figure 13](./assets/images/fig-13_ossec.conf.png)
+
+
 # Lessons Learned
 This is what I have learned so far:
 
 - How to install and configure Wazuh
 - How to incorporate other Windows log sources into Wazuh agents
 - Creating logs that would be picked up by different sources (Sysmon, Windows Defender)
+- How to forward logs from a Linux endpoint
 
 What I want to learn next:
-- How to add similar log sources on Linux
 - How to analyze logs for malicious activity
-
-Part 3 coming soon: Adding both systemd journal logs and directory monitoring on endpoint-01 on Linux.
 
